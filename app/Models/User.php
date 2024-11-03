@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'about',
+        'role'
     ];
 
     /**
@@ -37,11 +39,21 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [ // Changed to an array property
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+
+    public function isAdmin()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->role =='admin';
+    }
+
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+
     }
 }
